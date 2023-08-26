@@ -53,13 +53,7 @@ export function Chat() {
 
   return (
     <div>
-      {receivedMessages.value.map((msg) => (
-        <div>
-          <div>
-            <div>{msg.body}</div>
-          </div>
-        </div>
-      ))}
+      {receivedMessages.value.map((msg) => <div>{msg.body}</div>)}
       <input
         type="text"
         placeholder="メッセージを送信"
@@ -68,7 +62,7 @@ export function Chat() {
         onKeyDown={(e) =>
           e.key === "Enter" && sendHandler(e.currentTarget.value)}
       />
-      <button onClick={(e) => sendHandler(e.currentTarget.value)}>
+      <button onClick={() => sendHandler(inputMessage.value)}>
         チャット
       </button>
     </div>
