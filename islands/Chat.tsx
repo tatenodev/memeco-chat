@@ -2,6 +2,8 @@ import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { JSX } from "preact";
 import { Message } from "../utils/type.ts";
+import { Button } from "../components/Button.tsx";
+import { Input } from "../components/Input.tsx";
 
 const ConnectionState = {
   Connecting: 0,
@@ -64,18 +66,21 @@ export function Chat() {
   }, []);
 
   return (
-    <div>
+    <div class="w-full">
       {receivedMessages.value.map((msg) => <div>{msg.body}</div>)}
-      <input
-        type="text"
-        placeholder="メッセージを送信"
-        value={inputMessage.value}
-        onChange={(e) => inputMessage.value = e.currentTarget.value}
-        onKeyDown={handleKeyDown}
-      />
-      <button onClick={() => sendMessage(inputMessage.value)}>
-        チャット
-      </button>
+      <div class="flex">
+        <Input
+          class="flex-grow"
+          type="text"
+          placeholder="メッセージを送信"
+          value={inputMessage.value}
+          onChange={(e) => inputMessage.value = e.currentTarget.value}
+          onKeyDown={handleKeyDown}
+        />
+        <Button onClick={() => sendMessage(inputMessage.value)}>
+          チャット
+        </Button>
+      </div>
     </div>
   );
 }
