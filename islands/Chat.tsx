@@ -7,12 +7,12 @@ import { Input } from "../components/Input.tsx";
 
 const ConnectionState = {
   Connecting: 0,
-  Connected: 1,
-  Disconnected: 2,
+  Open: 1,
+  Close: 2,
 } as const;
 
 export function Chat() {
-  const connectionState = useSignal<number>(ConnectionState.Disconnected);
+  const connectionState = useSignal<number>(ConnectionState.Close);
   const inputMessage = useSignal("");
   const receivedMessages = useSignal<Message[]>([]);
 
@@ -42,15 +42,15 @@ export function Chat() {
     const events = new EventSource("/api/message/listen");
     events.addEventListener(
       "open",
-      () => connectionState.value = EventSource.CONNECTING,
+      () => connectionState.value = EventSource.OPEN,
     );
     events.addEventListener("error", () => {
       switch (events.readyState) {
-        case EventSource.OPEN:
-          connectionState.value = EventSource.OPEN;
-          break;
         case EventSource.CONNECTING:
           connectionState.value = EventSource.CONNECTING;
+          break;
+        case EventSource.OPEN:
+          connectionState.value = EventSource.OPEN;
           break;
         case EventSource.CLOSED:
           connectionState.value = EventSource.CLOSED;
@@ -78,7 +78,9 @@ export function Chat() {
           onKeyDown={handleKeyDown}
         />
         <Button onClick={() => sendMessage(inputMessage.value)}>
-          チャット
+          {connectionState.value === 0 && "接続中"}
+          {connectionState.value === 1 && "チャット"}
+          {connectionState.value === 2 && "接続切れ"}
         </Button>
       </div>
     </div>
