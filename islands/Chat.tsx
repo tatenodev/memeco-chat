@@ -1,5 +1,6 @@
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
+import { JSX } from "preact";
 import { Message } from "../utils/type.ts";
 
 const ConnectionState = {
@@ -13,7 +14,7 @@ export function Chat() {
   const inputMessage = useSignal("");
   const receivedMessages = useSignal<Message[]>([]);
 
-  const sendHandler = async (msg: string) => {
+  const sendMessage = async (msg: string) => {
     if (msg === "") {
       return;
     }
@@ -22,6 +23,17 @@ export function Chat() {
       body: JSON.stringify({ message: msg }),
     });
     inputMessage.value = "";
+  };
+
+  const handleKeyDown = (
+    e: JSX.TargetedKeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (e.isComposing || e.key === "Process" || e.keyCode === 229) {
+      // IME入力中
+      return;
+    } else {
+      e.key === "Enter" && sendMessage(e.currentTarget.value);
+    }
   };
 
   useEffect(() => {
@@ -59,10 +71,9 @@ export function Chat() {
         placeholder="メッセージを送信"
         value={inputMessage.value}
         onChange={(e) => inputMessage.value = e.currentTarget.value}
-        onKeyDown={(e) =>
-          e.key === "Enter" && sendHandler(e.currentTarget.value)}
+        onKeyDown={handleKeyDown}
       />
-      <button onClick={() => sendHandler(inputMessage.value)}>
+      <button onClick={() => sendMessage(inputMessage.value)}>
         チャット
       </button>
     </div>
