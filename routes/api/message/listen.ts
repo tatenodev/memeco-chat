@@ -5,7 +5,16 @@ export const handler: Handlers = {
     const channel = new BroadcastChannel("chat");
     const stream = new ReadableStream({
       start: (controller) => {
-        controller.enqueue(": Welcom to Deno Deploy Chat!\n\n");
+        controller.enqueue(": sending...\n\n");
+        controller.enqueue(
+          `data: ${
+            JSON.stringify({
+              id: "first",
+              body: "めめこの牢屋チャットへようこそ！",
+              timestamp: new Date().toISOString(),
+            })
+          }\n\n`,
+        );
         channel.onmessage = (e) => {
           const body = `data: ${JSON.stringify(e.data)}\n\n`;
           controller.enqueue(body);

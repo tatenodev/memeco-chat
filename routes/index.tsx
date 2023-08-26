@@ -1,11 +1,4 @@
-import { tw } from "twind";
-import { css } from "twind/css";
 import { Chat } from "../islands/Chat.tsx";
-
-const ChatBox = css`
-  display: flex;
-  align-items: flex-end;
-`;
 
 export default function Home() {
   return (
@@ -18,9 +11,9 @@ export default function Home() {
           height="128"
           alt="the Fresh logo: a sliced lemon dripping with juice"
         />
-        <h1 class="text-4xl font-bold">めめこの牢屋チャット</h1>
+        <h1 class="text-4xl font-bold">めめこの牢屋</h1>
       </header>
-      <main class={`flex-1 ${tw(ChatBox)}`}>
+      <main class="flex-1">
         <Chat />
       </main>
     </div>

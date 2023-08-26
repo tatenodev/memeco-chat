@@ -1,9 +1,40 @@
 import { useSignal } from "@preact/signals";
-import { useEffect } from "preact/hooks";
+import { useEffect, useRef } from "preact/hooks";
 import { JSX } from "preact";
 import { Message } from "../utils/type.ts";
 import { Button } from "../components/Button.tsx";
 import { Input } from "../components/Input.tsx";
+import { tw } from "twind";
+import { css } from "twind/css";
+
+const ChatWrapper = css`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
+const ChatBoxWrapper = css`
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  justify-content: end;
+  height: 100vh;
+  overflow-y: hidden;
+`;
+
+const ChatBox = css`
+width: 100%;
+  overflow-y: scroll;
+  &::-webkit-scrollbar{
+    display: none;
+  }
+  -ms-overflow-style: none;
+`;
+
+const InputArea = css`
+  display: flex;
+  width: 100%;
+`;
 
 const ConnectionState = {
   Connecting: 0,
@@ -15,6 +46,7 @@ export function Chat() {
   const connectionState = useSignal<number>(ConnectionState.Close);
   const inputMessage = useSignal("");
   const receivedMessages = useSignal<Message[]>([]);
+  const scrollElementRef = useRef<HTMLDivElement>(null);
 
   const sendMessage = async (msg: string) => {
     if (msg === "") {
@@ -65,10 +97,22 @@ export function Chat() {
     });
   }, []);
 
+  // 自動スクロール
+  useEffect(() => {
+    scrollElementRef.current?.scroll(
+      0,
+      scrollElementRef.current?.scrollHeight ?? 0,
+    );
+  }, [receivedMessages.value]);
+
   return (
-    <div class="w-full">
-      {receivedMessages.value.map((msg) => <div>{msg.body}</div>)}
-      <div class="flex">
+    <section class={tw(ChatWrapper)}>
+      <div class={tw(ChatBoxWrapper)}>
+        <div class={tw(ChatBox)} ref={scrollElementRef}>
+          {receivedMessages.value.map((msg) => <div>{msg.body}</div>)}
+        </div>
+      </div>
+      <div class={tw(InputArea)}>
         <Input
           class="flex-grow"
           type="text"
@@ -83,6 +127,6 @@ export function Chat() {
           {connectionState.value === 2 && "接続切れ"}
         </Button>
       </div>
-    </div>
+    </section>
   );
 }
