@@ -103,7 +103,10 @@ export function SettingModal(
             />
           </div>
           <div class={tw(ButtonWrapper)}>
-            <Button onClick={saveSettings}>
+            <Button onClick={() => isOpen.value = false}>
+              キャンセル
+            </Button>
+            <Button class="ml-3" onClick={saveSettings}>
               設定
             </Button>
           </div>
