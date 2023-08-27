@@ -2,6 +2,7 @@ import { Signal, useSignal } from "@preact/signals";
 import { tw } from "twind";
 import { css } from "twind/css";
 import { Button } from "../components/Button.tsx";
+import { isValidColorCode } from "../utils/color.ts";
 
 const Container = css`
   position: fixed;
@@ -39,20 +40,33 @@ const ButtonWrapper = css`
 type SettingModalProps = {
   isOpen: Signal<boolean>;
   userName: Signal<string>;
+  userColor: Signal<string>;
 };
 
-export function SettingModal({ isOpen, userName }: SettingModalProps) {
+export function SettingModal(
+  { isOpen, userName, userColor }: SettingModalProps,
+) {
   const localName = useSignal(userName.value);
+  const localColor = useSignal(userColor.value);
 
   const handleClose = () => {
     isOpen.value = false;
   };
 
-  const saveUserName = () => {
+  const saveSettings = () => {
+    if (!isValidColorCode(localColor.value)) {
+      alert("有効なカラーコードではありません");
+      return;
+    }
+
     userName.value = localName.value;
+    userColor.value = localColor.value;
     window.localStorage.setItem(
       "memecoPrisonSettings",
-      JSON.stringify({ userName: localName.value }),
+      JSON.stringify({
+        userName: localName.value,
+        userColor: localColor.value,
+      }),
     );
     isOpen.value = false;
   };
@@ -67,6 +81,7 @@ export function SettingModal({ isOpen, userName }: SettingModalProps) {
               表示名
             </label>
             <input
+              class="px-1 rounded"
               autocomplete="off"
               id="setting_user_name"
               type="text"
@@ -74,8 +89,21 @@ export function SettingModal({ isOpen, userName }: SettingModalProps) {
               onChange={(e) => localName.value = e.currentTarget.value}
             />
           </div>
+          <div class="pt-3">
+            <label class="text-white pr-2" htmlFor="setting_user_color">
+              カラーコード
+            </label>
+            <input
+              class="px-1 rounded"
+              autocomplete="off"
+              id="setting_user_color"
+              type="text"
+              value={localColor.value}
+              onChange={(e) => localColor.value = e.currentTarget.value}
+            />
+          </div>
           <div class={tw(ButtonWrapper)}>
-            <Button onClick={saveUserName}>
+            <Button onClick={saveSettings}>
               設定
             </Button>
           </div>

@@ -11,6 +11,7 @@ export const handler: Handlers = {
             JSON.stringify({
               id: "first",
               userName: "看守",
+              userColor: "#ffffff",
               body: "めめこの牢屋チャットへようこそ！",
               timestamp: new Date().toISOString(),
             })

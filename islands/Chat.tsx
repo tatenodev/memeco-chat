@@ -8,6 +8,7 @@ import { Message } from "../utils/type.ts";
 import { Button } from "../components/Button.tsx";
 import { Input } from "../components/Input.tsx";
 import { SettingModal } from "./SettingModal.tsx";
+import { getRandomColorCode } from "../utils/color.ts";
 
 const ChatWrapper = css`
   display: flex;
@@ -45,6 +46,11 @@ const ConnectionState = {
   Close: 2,
 } as const;
 
+type SettingsStorage = {
+  userName: string;
+  userColor: string;
+} | null;
+
 export function Chat() {
   const connectionState = useSignal<number>(ConnectionState.Close);
   const inputMessage = useSignal("");
@@ -52,12 +58,13 @@ export function Chat() {
   const scrollElementRef = useRef<HTMLDivElement>(null);
   const isOpenSettingModal = useSignal(false);
   const settingsStorage = window.localStorage.getItem("memecoPrisonSettings");
-  const settings: { userName: string } | null = settingsStorage
+  const settings: SettingsStorage = settingsStorage
     ? JSON.parse(settingsStorage)
     : null;
   const userName = useSignal(
-    settings?.userName ?? "囚人めめこ",
+    settings?.userName ?? "囚人",
   );
+  const userColor = useSignal(settings?.userColor ?? getRandomColorCode());
 
   const sendMessage = async (msg: string) => {
     if (msg === "") {
@@ -65,7 +72,11 @@ export function Chat() {
     }
     await fetch(`${location.origin}/api/message/send`, {
       method: "POST",
-      body: JSON.stringify({ message: msg, userName: userName.value }),
+      body: JSON.stringify({
+        message: msg,
+        userName: userName.value,
+        userColor: userColor.value,
+      }),
     });
     inputMessage.value = "";
   };
@@ -122,7 +133,7 @@ export function Chat() {
         <div class={tw(ChatBox)} ref={scrollElementRef}>
           {receivedMessages.value.map((msg) => (
             <div>
-              <span>{msg.userName}</span>
+              <span class={`text-[${msg.userColor}]`}>{msg.userName}</span>
               {": "}
               <span>{msg.body}</span>
             </div>
@@ -149,7 +160,11 @@ export function Chat() {
           <IconSettings />
         </Button>
         {isOpenSettingModal.value && (
-          <SettingModal userName={userName} isOpen={isOpenSettingModal} />
+          <SettingModal
+            userName={userName}
+            userColor={userColor}
+            isOpen={isOpenSettingModal}
+          />
         )}
       </div>
     </section>

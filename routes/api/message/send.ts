@@ -5,6 +5,7 @@ export const handler: Handlers = {
     const json = await req.json();
     const body = json.message;
     const userName = json.userName;
+    const userColor = json.userColor;
     if (typeof body !== "string") {
       return new Response("Invalid body.", { status: 404 });
     }
@@ -15,6 +16,7 @@ export const handler: Handlers = {
       id: crypto.randomUUID(),
       timestamp: new Date().toISOString(),
       userName,
+      userColor,
       body,
     };
 
