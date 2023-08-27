@@ -11,15 +11,34 @@ const RootWrap = css`
   background: #313338;
   display: flex;
   height: 100%;
-  @media screen and (max-width: 768px) {
+`;
 
+const Header = css`
+  max-width: 768px;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @media screen and (max-width: 768px) {
+    flex-grow: 0;
+  }
+`;
+
+const SiteName = css`
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  padding: 0.75rem;
+  @media screen and (max-width: 768px) {
+    display: none;
   }
 `;
 
 export default function Home() {
   return (
     <div class={tw(RootWrap)}>
-      <header class="max-w-screen-md flex flex-col items-center justify-center flex-1">
+      <header class={tw(Header)}>
         <img
           class="my-2 rounded-full"
           src="/memeco.jpg"
@@ -27,7 +46,7 @@ export default function Home() {
           height="128"
           alt="the Fresh logo: a sliced lemon dripping with juice"
         />
-        <h1 class="text-4xl font-bold p-3 text-white">めめこの牢屋</h1>
+        <h1 class={`text-white ${tw(SiteName)}`}>めめこの牢屋</h1>
         <XLink />
         <TwitchLink />
         <FreshLink />

@@ -1,13 +1,23 @@
+import { tw } from "twind";
+import { css } from "twind/css";
+
+const LinkStyle = css`
+  width: 197px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  @media screen and (max-width: 768px) {
+    width: 40px;
+    & > span {
+      display: none;
+    }
+  }
+`;
+
 export function TwitchLink() {
   return (
     <a
-      class="flex bg-[#A970FF] text-white rounded"
-      style={{
-        width: 197,
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: "10px",
-      }}
+      class={`flex bg-[#A970FF] text-white rounded ${tw(LinkStyle)}`}
       href="https://www.twitch.tv/memeco00"
       target="_blank"
       rel="noopener noreferrer"

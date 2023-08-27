@@ -149,7 +149,7 @@ export function Chat() {
           onChange={(e) => inputMessage.value = e.currentTarget.value}
           onKeyDown={handleKeyDown}
         />
-        <Button onClick={() => sendMessage(inputMessage.value)}>
+        <Button onClick={() => sendMessage(inputMessage.value)} class="text-sm">
           {connectionState.value === 0 && "接続中"}
           {connectionState.value === 1 && "チャット"}
           {connectionState.value === 2 && "接続切れ"}
