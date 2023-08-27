@@ -2,6 +2,7 @@ import { tw } from "twind";
 import { css } from "twind/css";
 
 const LinkStyle = css`
+  margin-bottom: 10px;
   @media screen and (max-width: 768px) {
     display: none;
   }

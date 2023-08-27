@@ -3,6 +3,7 @@ import { tw } from "twind";
 import { css } from "twind/css";
 import { Button } from "../components/Button.tsx";
 import { isValidColorCode } from "../utils/color.ts";
+import { MailLink } from "../components/snsLink/MailLink.tsx";
 
 const Container = css`
   position: fixed;
@@ -103,6 +104,7 @@ export function SettingModal(
             />
           </div>
           <div class={tw(ButtonWrapper)}>
+            <MailLink />
             <Button onClick={() => isOpen.value = false}>
               キャンセル
             </Button>
