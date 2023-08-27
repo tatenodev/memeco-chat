@@ -1,3 +1,4 @@
+import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useSignal } from "@preact/signals";
 import { useEffect, useRef } from "preact/hooks";
 import { JSX } from "preact";
@@ -57,7 +58,9 @@ export function Chat() {
   const receivedMessages = useSignal<Message[]>([]);
   const scrollElementRef = useRef<HTMLDivElement>(null);
   const isOpenSettingModal = useSignal(false);
-  const settingsStorage = window.localStorage.getItem("memecoPrisonSettings");
+  const settingsStorage = IS_BROWSER
+    ? window.localStorage.getItem("memecoPrisonSettings")
+    : null;
   const settings: SettingsStorage = settingsStorage
     ? JSON.parse(settingsStorage)
     : null;
