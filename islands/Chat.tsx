@@ -65,11 +65,45 @@ export function Chat() {
     settings?.userName ?? "囚人",
   );
   const userColor = useSignal(settings?.userColor ?? getRandomColorCode());
+  const sendTime = useSignal<{ timestamp: Date; message: string }[]>([]);
 
   const sendMessage = async (msg: string) => {
     if (msg === "") {
       return;
     }
+    // 文字数制限
+    if (msg.length >= 500) {
+      alert("上限の500文字に到達しています");
+      return;
+    }
+    // 連投抑制
+    if (sendTime.value.length > 0) {
+      const isSameMessage = sendTime.value.some((prevMsg) =>
+        prevMsg.message === msg
+      );
+      const currentTime = new Date().getTime();
+      const targetPrevContent = sendTime.value.find((content) =>
+        content.message === msg
+      );
+      if (targetPrevContent) {
+        const millisecondsDifference = currentTime -
+          targetPrevContent.timestamp.getTime();
+        const isOver30Seconds = (millisecondsDifference / 1000) <= 30;
+        if (isOver30Seconds && isSameMessage) {
+          alert("30以内に同じコメントは送信できません");
+          return;
+        }
+      }
+    }
+
+    // コメントを送信した時間と文字列を格納
+    sendTime.value = [
+      {
+        timestamp: new Date(),
+        message: msg,
+      },
+      ...sendTime.value.splice(0, 4),
+    ];
     await fetch(`${location.origin}/api/message/send`, {
       method: "POST",
       body: JSON.stringify({
