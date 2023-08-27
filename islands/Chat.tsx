@@ -1,11 +1,13 @@
 import { useSignal } from "@preact/signals";
 import { useEffect, useRef } from "preact/hooks";
 import { JSX } from "preact";
+import { tw } from "twind";
+import { css } from "twind/css";
+import IconSettings from "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/settings.tsx";
 import { Message } from "../utils/type.ts";
 import { Button } from "../components/Button.tsx";
 import { Input } from "../components/Input.tsx";
-import { tw } from "twind";
-import { css } from "twind/css";
+import { SettingModal } from "./SettingModal.tsx";
 
 const ChatWrapper = css`
   display: flex;
@@ -23,6 +25,7 @@ const ChatBoxWrapper = css`
 `;
 
 const ChatBox = css`
+color: white;
 width: 100%;
   overflow-y: scroll;
   &::-webkit-scrollbar{
@@ -47,6 +50,14 @@ export function Chat() {
   const inputMessage = useSignal("");
   const receivedMessages = useSignal<Message[]>([]);
   const scrollElementRef = useRef<HTMLDivElement>(null);
+  const isOpenSettingModal = useSignal(false);
+  const settingsStorage = window.localStorage.getItem("memecoPrisonSettings");
+  const settings: { userName: string } | null = settingsStorage
+    ? JSON.parse(settingsStorage)
+    : null;
+  const userName = useSignal(
+    settings?.userName ?? "囚人めめこ",
+  );
 
   const sendMessage = async (msg: string) => {
     if (msg === "") {
@@ -54,7 +65,7 @@ export function Chat() {
     }
     await fetch(`${location.origin}/api/message/send`, {
       method: "POST",
-      body: JSON.stringify({ message: msg }),
+      body: JSON.stringify({ message: msg, userName: userName.value }),
     });
     inputMessage.value = "";
   };
@@ -109,7 +120,13 @@ export function Chat() {
     <section class={tw(ChatWrapper)}>
       <div class={tw(ChatBoxWrapper)}>
         <div class={tw(ChatBox)} ref={scrollElementRef}>
-          {receivedMessages.value.map((msg) => <div>{msg.body}</div>)}
+          {receivedMessages.value.map((msg) => (
+            <div>
+              <span>{msg.userName}</span>
+              {": "}
+              <span>{msg.body}</span>
+            </div>
+          ))}
         </div>
       </div>
       <div class={tw(InputArea)}>
@@ -126,6 +143,14 @@ export function Chat() {
           {connectionState.value === 1 && "チャット"}
           {connectionState.value === 2 && "接続切れ"}
         </Button>
+        <Button
+          onClick={() => isOpenSettingModal.value = !isOpenSettingModal.value}
+        >
+          <IconSettings />
+        </Button>
+        {isOpenSettingModal.value && (
+          <SettingModal userName={userName} isOpen={isOpenSettingModal} />
+        )}
       </div>
     </section>
   );

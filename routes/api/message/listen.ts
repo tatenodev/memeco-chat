@@ -10,6 +10,7 @@ export const handler: Handlers = {
           `data: ${
             JSON.stringify({
               id: "first",
+              userName: "看守",
               body: "めめこの牢屋チャットへようこそ！",
               timestamp: new Date().toISOString(),
             })

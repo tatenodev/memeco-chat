@@ -1,7 +1,7 @@
 export function XLink() {
   return (
     <a
-      class="flex bg-black text-white rounded"
+      class="flex bg-black text-white rounded-md border border-gray-600"
       style={{
         width: 197,
         justifyContent: "center",

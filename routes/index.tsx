@@ -8,7 +8,7 @@ import { FreshLink } from "../components/snsLink/FreshLink.tsx";
 const RootWrap = css`
   padding: 8px 4px;
   margin: auto 0;
-  background: #86efac;
+  background: #313338;
   display: flex;
   height: 100%;
   @media screen and (max-width: 768px) {
@@ -27,7 +27,7 @@ export default function Home() {
           height="128"
           alt="the Fresh logo: a sliced lemon dripping with juice"
         />
-        <h1 class="text-4xl font-bold p-3">めめこの牢屋</h1>
+        <h1 class="text-4xl font-bold p-3 text-white">めめこの牢屋</h1>
         <XLink />
         <TwitchLink />
         <FreshLink />
