@@ -4,7 +4,6 @@ import { Chat } from "../islands/Chat.tsx";
 import { XLink } from "../components/snsLink/XLink.tsx";
 import { TwitchLink } from "../components/snsLink/TwitchLink.tsx";
 import { FreshLink } from "../components/snsLink/FreshLink.tsx";
-import { MailLink } from "../components/snsLink/MailLink.tsx";
 
 const RootWrap = css`
   padding: 8px 4px;

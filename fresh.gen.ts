@@ -7,6 +7,7 @@ import * as $1 from "./routes/_app.tsx";
 import * as $2 from "./routes/api/message/listen.ts";
 import * as $3 from "./routes/api/message/send.ts";
 import * as $4 from "./routes/index.tsx";
+import * as $5 from "./routes/roadmap/index.tsx";
 import * as $$0 from "./islands/Chat.tsx";
 import * as $$1 from "./islands/Counter.tsx";
 import * as $$2 from "./islands/SettingModal.tsx";
@@ -18,6 +19,7 @@ const manifest = {
     "./routes/api/message/listen.ts": $2,
     "./routes/api/message/send.ts": $3,
     "./routes/index.tsx": $4,
+    "./routes/roadmap/index.tsx": $5,
   },
   islands: {
     "./islands/Chat.tsx": $$0,
