@@ -9,6 +9,8 @@ const LinkStylePc = css`
 `;
 const LinkStyleSp = css`
   background: white;
+  width: 40px;
+  margin-bottom: 10px;
   & img {
     padding: 4px;
   }

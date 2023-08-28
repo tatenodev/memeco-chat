@@ -5,7 +5,7 @@ const LinkStyle = css`
   width: 197px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 9px;
   @media screen and (max-width: 768px) {
     width: 40px;
     & > span {

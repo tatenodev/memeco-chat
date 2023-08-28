@@ -4,6 +4,7 @@ import { Chat } from "../islands/Chat.tsx";
 import { XLink } from "../components/snsLink/XLink.tsx";
 import { TwitchLink } from "../components/snsLink/TwitchLink.tsx";
 import { FreshLink } from "../components/snsLink/FreshLink.tsx";
+import { RoadmapLink } from "../components/snsLink/RoadmapLink.tsx";
 
 const RootWrap = css`
   padding: 8px 4px;
@@ -49,6 +50,7 @@ export default function Home() {
         <h1 class={`text-white ${tw(SiteName)}`}>めめこの牢屋</h1>
         <XLink />
         <TwitchLink />
+        <RoadmapLink />
         <FreshLink />
       </header>
       <main class="flex-1">
