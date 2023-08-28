@@ -21,7 +21,7 @@ const Card = css`
     max-width: 500px;
     width: 100%;
     margin: 0 auto 10px;
-    padding: 16px;
+    padding: 16px 10px;
     font-size: 18px;
   }
   & span {
@@ -42,18 +42,18 @@ export default function Roadmap() {
           <li>
             ログの永続化
             <span>
-              30日間ぐらいorもうちょっと長めでログを保存できるようにする
+              30日間orもうちょっと長めでログを保存
             </span>
-          </li>
-          <li>
-            デザインの見直し<span>サイト全体のデザインの調整</span>
           </li>
           <li>
             曲リクエスト機能<span>
-              めめこさんに歌ってほしい曲リクができるようにしたい
+              めめこさんに歌ってほしい曲リクエスト機能
             </span>
           </li>
         </ul>
+        <div class="text-center">
+          <a href="/" class="text-center">戻る</a>
+        </div>
       </main>
     </>
   );
