@@ -36,7 +36,7 @@ export default function Roadmap() {
       <main class={tw(Main)}>
         <h1 class={tw(Title)}>気まぐれ開発ロードマップ</h1>
         <p class="text-center text-sm">
-          実装したい願望を書き綴ったもので実際実装されるかはわかりません！
+          実装したい願望を書き綴ったもので実際に実装されるかはわかりません！
         </p>
         <ul class={tw(Card)}>
           <li>
