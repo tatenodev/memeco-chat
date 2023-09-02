@@ -8,10 +8,9 @@ export const handler: Handlers = {
     const result = await getMessage();
     console.log("getMessage result:", result);
     console.log("stringify:", JSON.stringify({ messages: result }));
-    return new Response(JSON.stringify({ messages: result }), {
-      status: 200,
+    return new Response(JSON.stringify({ messages: result }, null, 2), {
       headers: {
-        "content-type": "application/json",
+        "content-type": "application/json; charset=utf-8",
       },
     });
   },
