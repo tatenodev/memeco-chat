@@ -40,7 +40,12 @@ const SiteName = css`
 `;
 
 export default defineRoute(async (_req, _ctx) => {
-  const result = await fetch(`${Deno.env.get("SITE_ORIGIN")}api/message`);
+  console.log("get endpoint:", Deno.env.get("SITE_ORIGIN"));
+  const result = await fetch(`${Deno.env.get("SITE_ORIGIN")}api/message`, {
+    headers: {
+      accept: "application/json",
+    },
+  });
   const data: { messages: Message[] } = await result.json();
 
   return (
