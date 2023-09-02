@@ -180,6 +180,13 @@ export function Chat({ messages }: ChatProps) {
                 <span>{msg.body}</span>
               </div>
             ))}
+
+          <div>
+            <span class={`text-[#ffffff]`}>看守</span>
+            {": "}
+            <span>めめこの牢屋チャットへようこそ！</span>
+          </div>
+
           {receivedMessages.value.map((msg) => (
             <div key={msg.id}>
               <span class={`text-[${msg.userColor}]`}>{msg.userName}</span>

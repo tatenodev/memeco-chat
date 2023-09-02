@@ -6,17 +6,17 @@ export const handler: Handlers = {
     const stream = new ReadableStream({
       start: (controller) => {
         controller.enqueue(": sending...\n\n");
-        controller.enqueue(
-          `data: ${
-            JSON.stringify({
-              id: "first",
-              userName: "看守",
-              userColor: "#ffffff",
-              body: "めめこの牢屋チャットへようこそ！",
-              timestamp: new Date().toISOString(),
-            })
-          }\n\n`,
-        );
+        // controller.enqueue(
+        //   `data: ${
+        //     JSON.stringify({
+        //       id: "first",
+        //       userName: "看守",
+        //       userColor: "#ffffff",
+        //       body: "めめこの牢屋チャットへようこそ！",
+        //       timestamp: new Date().toISOString(),
+        //     })
+        //   }\n\n`,
+        // );
         channel.onmessage = (e) => {
           const body = `data: ${JSON.stringify(e.data)}\n\n`;
           controller.enqueue(body);
