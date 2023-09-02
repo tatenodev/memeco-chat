@@ -10,30 +10,12 @@ import { Button } from "../components/Button.tsx";
 import { Input } from "../components/Input.tsx";
 import { SettingModal } from "./SettingModal.tsx";
 import { getRandomColorCode } from "../utils/color.ts";
+import { ChatMessagesArea } from "./ChatMessagesArea.tsx";
 
 const ChatWrapper = css`
   display: flex;
   flex-direction: column;
   height: 100%;
-`;
-
-const ChatBoxWrapper = css`
-  display: flex;
-  flex-direction: column;
-  align-items: baseline;
-  justify-content: end;
-  height: 100vh;
-  overflow-y: hidden;
-`;
-
-const ChatBox = css`
-color: white;
-width: 100%;
-  overflow-y: scroll;
-  &::-webkit-scrollbar{
-    display: none;
-  }
-  -ms-overflow-style: none;
 `;
 
 const InputArea = css`
@@ -60,7 +42,6 @@ export function Chat({ messages }: ChatProps) {
   const connectionState = useSignal<number>(ConnectionState.Close);
   const inputMessage = useSignal("");
   const receivedMessages = useSignal<Message[]>([]);
-  const scrollElementRef = useRef<HTMLDivElement>(null);
   const isOpenSettingModal = useSignal(false);
   const settingsStorage = IS_BROWSER
     ? window.localStorage.getItem("memecoPrisonSettings")
@@ -103,14 +84,6 @@ export function Chat({ messages }: ChatProps) {
       }
     }
 
-    // コメントを送信した時間と文字列を格納
-    lastTimeSend.value = [
-      {
-        timestamp: new Date(),
-        message: msg,
-      },
-      ...lastTimeSend.value.splice(0, 4),
-    ];
     await fetch(`${location.origin}/api/message/send`, {
       method: "POST",
       body: JSON.stringify({
@@ -119,6 +92,14 @@ export function Chat({ messages }: ChatProps) {
         userColor: userColor.value,
       }),
     });
+    // コメントを送信した時間と文字列を格納
+    lastTimeSend.value = [
+      {
+        timestamp: new Date(),
+        message: msg,
+      },
+      ...lastTimeSend.value.splice(0, 4),
+    ];
     inputMessage.value = "";
   };
 
@@ -160,42 +141,12 @@ export function Chat({ messages }: ChatProps) {
     });
   }, []);
 
-  // 自動スクロール
-  useEffect(() => {
-    scrollElementRef.current?.scroll(
-      0,
-      scrollElementRef.current?.scrollHeight ?? 0,
-    );
-  }, [receivedMessages.value]);
-
   return (
     <section class={tw(ChatWrapper)}>
-      <div class={tw(ChatBoxWrapper)}>
-        <div class={tw(ChatBox)} ref={scrollElementRef}>
-          {messages &&
-            messages.slice().reverse().map((msg) => (
-              <div key={msg.id}>
-                <span class={`text-[${msg.userColor}]`}>{msg.userName}</span>
-                {": "}
-                <span>{msg.body}</span>
-              </div>
-            ))}
-
-          <div>
-            <span class={`text-[#ffffff]`}>看守</span>
-            {": "}
-            <span>めめこの牢屋チャットへようこそ！</span>
-          </div>
-
-          {receivedMessages.value.map((msg) => (
-            <div key={msg.id}>
-              <span class={`text-[${msg.userColor}]`}>{msg.userName}</span>
-              {": "}
-              <span>{msg.body}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <ChatMessagesArea
+        messages={messages}
+        receivedMessages={receivedMessages}
+      />
       <div class={tw(InputArea)}>
         <Input
           class="flex-grow"

@@ -11,7 +11,7 @@ import * as $5 from "./routes/api/message/send.ts";
 import * as $6 from "./routes/index.tsx";
 import * as $7 from "./routes/roadmap/index.tsx";
 import * as $$0 from "./islands/Chat.tsx";
-import * as $$1 from "./islands/Counter.tsx";
+import * as $$1 from "./islands/ChatMessagesArea.tsx";
 import * as $$2 from "./islands/SettingModal.tsx";
 
 const manifest = {
@@ -27,7 +27,7 @@ const manifest = {
   },
   islands: {
     "./islands/Chat.tsx": $$0,
-    "./islands/Counter.tsx": $$1,
+    "./islands/ChatMessagesArea.tsx": $$1,
     "./islands/SettingModal.tsx": $$2,
   },
   baseUrl: import.meta.url,
