@@ -3,6 +3,8 @@
 /// <reference lib="dom.iterable" />
 /// <reference lib="dom.asynciterable" />
 /// <reference lib="deno.ns" />
+/// <reference lib="deno.unstable" />
+// unstableなapiを追加するときは <reference lib="deno.unstable" /> を追加する必要がある
 
 import "$std/dotenv/load.ts";
 

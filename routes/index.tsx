@@ -5,6 +5,8 @@ import { XLink } from "../components/snsLink/XLink.tsx";
 import { TwitchLink } from "../components/snsLink/TwitchLink.tsx";
 import { FreshLink } from "../components/snsLink/FreshLink.tsx";
 import { RoadmapLink } from "../components/snsLink/RoadmapLink.tsx";
+import { Handlers, PageProps } from "$fresh/server.ts";
+import { Message } from "../utils/type.ts";
 
 const RootWrap = css`
   padding: 8px 4px;
@@ -36,7 +38,15 @@ const SiteName = css`
   }
 `;
 
-export default function Home() {
+export const handler: Handlers<{ messages: Message[] }> = {
+  async GET(_req, ctx) {
+    const result = await fetch("http://localhost:8000/api/message");
+    const data: { messages: Message[] } = await result.json();
+    return ctx.render(data);
+  },
+};
+
+export default function Home({ data }: PageProps<{ messages: Message[] }>) {
   return (
     <div class={tw(RootWrap)}>
       <header class={tw(Header)}>
@@ -54,7 +64,7 @@ export default function Home() {
         <FreshLink />
       </header>
       <main class="flex-1">
-        <Chat />
+        <Chat messages={data.messages} />
       </main>
     </div>
   );
