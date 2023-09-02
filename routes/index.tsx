@@ -46,6 +46,7 @@ export default defineRoute(async (_req, _ctx) => {
       accept: "application/json",
     },
   });
+  console.log("result", result);
   const data: { messages: Message[] } = await result.json();
 
   return (
