@@ -4,14 +4,12 @@ const kv = await Deno.openKv();
 const MESSAGE_LOG = "message_log";
 
 export const getMessage = async () => {
-  console.log("getMessage exec.");
   try {
     const logs = kv.list<Message>({ prefix: [MESSAGE_LOG] });
     const message: Message[] = [];
     for await (const entry of logs) {
       message.push(entry.value);
     }
-    console.log("getMessage end.");
     return message;
   } catch (err) {
     console.log("getMessage err:", err);

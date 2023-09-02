@@ -5,8 +5,7 @@ import { XLink } from "../components/snsLink/XLink.tsx";
 import { TwitchLink } from "../components/snsLink/TwitchLink.tsx";
 import { FreshLink } from "../components/snsLink/FreshLink.tsx";
 import { RoadmapLink } from "../components/snsLink/RoadmapLink.tsx";
-import { defineRoute, RouteConfig, RouteContext } from "$fresh/server.ts";
-import { useCSP } from "$fresh/runtime.ts";
+import { Handlers, PageProps } from "$fresh/server.ts";
 import { Message } from "../utils/type.ts";
 import { getMessage } from "../utils/db.ts";
 
@@ -31,6 +30,7 @@ const Header = css`
 `;
 
 const SiteName = css`
+  color: white;
   font-size: 2.25rem;
   line-height: 2.5rem;
   font-weight: 700;
@@ -40,23 +40,18 @@ const SiteName = css`
   }
 `;
 
-export default defineRoute(async (_req, _ctx) => {
-  // console.log("get endpoint:", Deno.env.get("SITE_ORIGIN"));
-  // const result = await fetch(`${Deno.env.get("SITE_ORIGIN")}api/message`, {
-  //   headers: {
-  //     accept: "application/json",
-  //   },
-  // });
-  // console.log("result", result);
-  // const data: { messages: Message[] } = await result.json();
+export const handler: Handlers<{ messages: Message[] }> = {
+  async GET(_req, ctx) {
+    const messages = await getMessage();
+    return ctx.render({ messages });
+  },
+};
 
-  const messages = await getMessage();
-
+export default function Home({ data }: PageProps<{ messages: Message[] }>) {
   return (
     <>
-      <link rel="stylesheet" type="text/css" href="top.css" />
-      <div class="rootWrap">
-        <header class="header">
+      <div class={tw(RootWrap)}>
+        <header class={tw(Header)}>
           <img
             class="my-2 rounded-full"
             src="/memeco.jpg"
@@ -64,7 +59,7 @@ export default defineRoute(async (_req, _ctx) => {
             height="128"
             alt="the Fresh logo: a sliced lemon dripping with juice"
           />
-          <h1 class="siteName">
+          <h1 class={tw(SiteName)}>
             めめこの牢屋
           </h1>
           <XLink />
@@ -73,9 +68,9 @@ export default defineRoute(async (_req, _ctx) => {
           <FreshLink />
         </header>
         <main class="flex-1">
-          <Chat messages={messages} />
+          <Chat messages={data.messages} />
         </main>
       </div>
     </>
   );
-});
+}
