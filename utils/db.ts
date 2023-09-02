@@ -13,7 +13,10 @@ export const getMessage = async () => {
 };
 
 export const addMessage = async (message: Message) => {
-  const result = await kv.set([MESSAGE_LOG, message.id], message);
+  const result = await kv.set([MESSAGE_LOG, message.id], message, {
+    // expireIn: 30 * 24 * 60 * 60, // 30日後に削除
+    expireIn: 10 * 1000, // 10秒後に削除
+  });
   return result;
 };
 

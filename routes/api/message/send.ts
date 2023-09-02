@@ -27,8 +27,8 @@ export const handler: Handlers = {
     channel.close();
 
     const result = await addMessage(message);
-    console.log("result:", result);
 
+    if (!result.ok) return new Response("Faild addMessage.");
     return new Response("Successful!");
   },
 };
