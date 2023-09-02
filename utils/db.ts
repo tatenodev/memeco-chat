@@ -6,7 +6,7 @@ const MESSAGE_LOG = "message_log";
 export const getMessage = async () => {
   try {
     const logs = kv.list<Message>({ prefix: [MESSAGE_LOG] }, {
-      limit: 30,
+      limit: 100,
       reverse: true,
     });
     const message: Message[] = [];
