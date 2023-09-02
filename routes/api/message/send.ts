@@ -1,4 +1,7 @@
 import { Handlers } from "$fresh/server.ts";
+import { ulid } from "https://deno.land/x/ulid@v0.3.0/mod.ts";
+import { Message } from "../../../utils/type.ts";
+import { addMessage } from "../../../utils/db.ts";
 
 export const handler: Handlers = {
   async POST(req) {
@@ -12,8 +15,8 @@ export const handler: Handlers = {
 
     const channel = new BroadcastChannel("chat");
 
-    const message = {
-      id: crypto.randomUUID(),
+    const message: Message = {
+      id: ulid(),
       timestamp: new Date().toISOString(),
       userName,
       userColor,
@@ -23,6 +26,9 @@ export const handler: Handlers = {
     channel.postMessage(message);
     channel.close();
 
+    const result = await addMessage(message);
+
+    if (!result.ok) return new Response("Faild addMessage.");
     return new Response("Successful!");
   },
 };

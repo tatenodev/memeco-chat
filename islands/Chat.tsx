@@ -52,7 +52,11 @@ type SettingsStorage = {
   userColor: string;
 } | null;
 
-export function Chat() {
+type ChatProps = {
+  messages: Message[];
+};
+
+export function Chat({ messages }: ChatProps) {
   const connectionState = useSignal<number>(ConnectionState.Close);
   const inputMessage = useSignal("");
   const receivedMessages = useSignal<Message[]>([]);
@@ -68,7 +72,7 @@ export function Chat() {
     settings?.userName ?? "囚人",
   );
   const userColor = useSignal(settings?.userColor ?? getRandomColorCode());
-  const sendTime = useSignal<{ timestamp: Date; message: string }[]>([]);
+  const lastTimeSend = useSignal<{ timestamp: Date; message: string }[]>([]);
 
   const sendMessage = async (msg: string) => {
     if (msg === "") {
@@ -80,12 +84,12 @@ export function Chat() {
       return;
     }
     // 連投抑制
-    if (sendTime.value.length > 0) {
-      const isSameMessage = sendTime.value.some((prevMsg) =>
+    if (lastTimeSend.value.length > 0) {
+      const isSameMessage = lastTimeSend.value.some((prevMsg) =>
         prevMsg.message === msg
       );
       const currentTime = new Date().getTime();
-      const targetPrevContent = sendTime.value.find((content) =>
+      const targetPrevContent = lastTimeSend.value.find((content) =>
         content.message === msg
       );
       if (targetPrevContent) {
@@ -100,12 +104,12 @@ export function Chat() {
     }
 
     // コメントを送信した時間と文字列を格納
-    sendTime.value = [
+    lastTimeSend.value = [
       {
         timestamp: new Date(),
         message: msg,
       },
-      ...sendTime.value.splice(0, 4),
+      ...lastTimeSend.value.splice(0, 4),
     ];
     await fetch(`${location.origin}/api/message/send`, {
       method: "POST",
@@ -168,8 +172,16 @@ export function Chat() {
     <section class={tw(ChatWrapper)}>
       <div class={tw(ChatBoxWrapper)}>
         <div class={tw(ChatBox)} ref={scrollElementRef}>
+          {messages &&
+            messages.slice().reverse().map((msg) => (
+              <div key={msg.id}>
+                <span class={`text-[${msg.userColor}]`}>{msg.userName}</span>
+                {": "}
+                <span>{msg.body}</span>
+              </div>
+            ))}
           {receivedMessages.value.map((msg) => (
-            <div>
+            <div key={msg.id}>
               <span class={`text-[${msg.userColor}]`}>{msg.userName}</span>
               {": "}
               <span>{msg.body}</span>
