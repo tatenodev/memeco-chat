@@ -5,7 +5,8 @@ import { XLink } from "../components/snsLink/XLink.tsx";
 import { TwitchLink } from "../components/snsLink/TwitchLink.tsx";
 import { FreshLink } from "../components/snsLink/FreshLink.tsx";
 import { RoadmapLink } from "../components/snsLink/RoadmapLink.tsx";
-import { Handlers, PageProps } from "$fresh/server.ts";
+import { defineRoute, RouteConfig, RouteContext } from "$fresh/server.ts";
+import { useCSP } from "$fresh/runtime.ts";
 import { Message } from "../utils/type.ts";
 
 const RootWrap = css`
@@ -38,37 +39,34 @@ const SiteName = css`
   }
 `;
 
-export const handler: Handlers<{ messages: Message[] }> = {
-  async GET(_req, ctx) {
-    console.log("GET start.");
-    const result = await fetch(`${Deno.env.get("SITE_ORIGIN")}api/message`);
-    console.log("fetch end.");
-    const data: { messages: Message[] } = await result.json();
-    console.log("data", data);
-    return ctx.render(data);
-  },
-};
+export default defineRoute(async (_req, _ctx) => {
+  const result = await fetch(`${Deno.env.get("SITE_ORIGIN")}api/message`);
+  const data: { messages: Message[] } = await result.json();
 
-export default function Home({ data }: PageProps<{ messages: Message[] }>) {
   return (
-    <div class={tw(RootWrap)}>
-      <header class={tw(Header)}>
-        <img
-          class="my-2 rounded-full"
-          src="/memeco.jpg"
-          width="128"
-          height="128"
-          alt="the Fresh logo: a sliced lemon dripping with juice"
-        />
-        <h1 class={`text-white ${tw(SiteName)}`}>めめこの牢屋</h1>
-        <XLink />
-        <TwitchLink />
-        <RoadmapLink />
-        <FreshLink />
-      </header>
-      <main class="flex-1">
-        <Chat messages={data.messages} />
-      </main>
-    </div>
+    <>
+      <link rel="stylesheet" type="text/css" href="top.css" />
+      <div class="rootWrap">
+        <header class="header">
+          <img
+            class="my-2 rounded-full"
+            src="/memeco.jpg"
+            width="128"
+            height="128"
+            alt="the Fresh logo: a sliced lemon dripping with juice"
+          />
+          <h1 class="siteName">
+            めめこの牢屋
+          </h1>
+          <XLink />
+          <TwitchLink />
+          <RoadmapLink />
+          <FreshLink />
+        </header>
+        <main class="flex-1">
+          <Chat messages={data.messages} />
+        </main>
+      </div>
+    </>
   );
-}
+});
