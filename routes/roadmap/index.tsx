@@ -40,9 +40,8 @@ export default function Roadmap() {
         </p>
         <ul class={tw(Card)}>
           <li>
-            ログの永続化
-            <span>
-              30日間orもうちょっと長めでログを保存
+            ウォチパリクエスト<span>
+              めめこさんと一緒に見たい映画リク機能
             </span>
           </li>
           <li>
