@@ -172,13 +172,14 @@ export function Chat({ messages }: ChatProps) {
     <section class={tw(ChatWrapper)}>
       <div class={tw(ChatBoxWrapper)}>
         <div class={tw(ChatBox)} ref={scrollElementRef}>
-          {messages && messages.map((msg) => (
-            <div key={msg.id}>
-              <span class={`text-[${msg.userColor}]`}>{msg.userName}</span>
-              {": "}
-              <span>{msg.body}</span>
-            </div>
-          ))}
+          {messages &&
+            messages.slice().reverse().map((msg) => (
+              <div key={msg.id}>
+                <span class={`text-[${msg.userColor}]`}>{msg.userName}</span>
+                {": "}
+                <span>{msg.body}</span>
+              </div>
+            ))}
           {receivedMessages.value.map((msg) => (
             <div key={msg.id}>
               <span class={`text-[${msg.userColor}]`}>{msg.userName}</span>

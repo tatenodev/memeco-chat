@@ -26,6 +26,7 @@ const Header = css`
   justify-content: center;
   @media screen and (max-width: 768px) {
     flex-grow: 0;
+    padding-right: 6px;
   }
 `;
 
