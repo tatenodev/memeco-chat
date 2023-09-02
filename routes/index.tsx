@@ -8,6 +8,7 @@ import { RoadmapLink } from "../components/snsLink/RoadmapLink.tsx";
 import { defineRoute, RouteConfig, RouteContext } from "$fresh/server.ts";
 import { useCSP } from "$fresh/runtime.ts";
 import { Message } from "../utils/type.ts";
+import { getMessage } from "../utils/db.ts";
 
 const RootWrap = css`
   padding: 8px 4px;
@@ -40,14 +41,16 @@ const SiteName = css`
 `;
 
 export default defineRoute(async (_req, _ctx) => {
-  console.log("get endpoint:", Deno.env.get("SITE_ORIGIN"));
-  const result = await fetch(`${Deno.env.get("SITE_ORIGIN")}api/message`, {
-    headers: {
-      accept: "application/json",
-    },
-  });
-  console.log("result", result);
-  const data: { messages: Message[] } = await result.json();
+  // console.log("get endpoint:", Deno.env.get("SITE_ORIGIN"));
+  // const result = await fetch(`${Deno.env.get("SITE_ORIGIN")}api/message`, {
+  //   headers: {
+  //     accept: "application/json",
+  //   },
+  // });
+  // console.log("result", result);
+  // const data: { messages: Message[] } = await result.json();
+
+  const messages = await getMessage();
 
   return (
     <>
@@ -70,7 +73,7 @@ export default defineRoute(async (_req, _ctx) => {
           <FreshLink />
         </header>
         <main class="flex-1">
-          <Chat messages={data.messages} />
+          <Chat messages={messages} />
         </main>
       </div>
     </>
