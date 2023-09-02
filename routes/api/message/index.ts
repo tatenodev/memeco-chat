@@ -8,7 +8,12 @@ export const handler: Handlers = {
     const result = await getMessage();
     console.log("getMessage result:", result);
     console.log("stringify:", JSON.stringify({ messages: result }));
-    return Response.json({ messages: result });
+    return new Response(JSON.stringify({ messages: result }), {
+      status: 200,
+      headers: {
+        "content-type": "application/json",
+      },
+    });
   },
   async POST(req) {
     const json: Message = await req.json();
