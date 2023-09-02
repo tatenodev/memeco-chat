@@ -8,7 +8,7 @@ export const handler: Handlers = {
     const result = await getMessage();
     console.log("getMessage result:", result);
     console.log("stringify:", JSON.stringify({ messages: result }));
-    return new Response(JSON.stringify({ messages: result }));
+    return Response.json({ messages: result });
   },
   async POST(req) {
     const json: Message = await req.json();
