@@ -4,6 +4,7 @@ import { Message } from "../../../utils/type.ts";
 
 export const handler: Handlers = {
   async GET() {
+    console.log("get start.");
     const result = await getMessage();
     console.log("getMessage result:", result);
     console.log("stringify:", JSON.stringify({ messages: result }));
