@@ -40,7 +40,7 @@ const SiteName = css`
 
 export const handler: Handlers<{ messages: Message[] }> = {
   async GET(_req, ctx) {
-    const result = await fetch("http://localhost:8000/api/message");
+    const result = await fetch(`${Deno.env.get("SITE_ORIGIN")}api/message`);
     const data: { messages: Message[] } = await result.json();
     return ctx.render(data);
   },
