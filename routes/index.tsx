@@ -8,6 +8,7 @@ import { RoadmapLink } from "../components/snsLink/RoadmapLink.tsx";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { Message } from "../utils/type.ts";
 import { getMessage } from "../utils/db.ts";
+import { Head } from "$fresh/runtime.ts";
 
 const RootWrap = css`
   padding: 8px 4px;
@@ -51,6 +52,24 @@ export const handler: Handlers<{ messages: Message[] }> = {
 export default function Home({ data }: PageProps<{ messages: Message[] }>) {
   return (
     <>
+      <Head>
+        <title>めめこの牢屋</title>
+        <meta property="og:site_name" content="めめこの牢屋" />
+        <meta property="og:title" content="めめこの牢屋" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://memeco-prison.deno.dev" />
+        <meta property="og:locale" content="ja_JP" />
+        <meta
+          property="og:description"
+          content="へたくそゲーム実況、雑談、料理配信してます( ˙༥˙ )"
+        />
+        <meta
+          property="og:image"
+          content="https://memeco-prison.deno.dev/memeco.jpg"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@memeco2525" />
+      </Head>
       <div class={tw(RootWrap)}>
         <header class={tw(Header)}>
           <img
