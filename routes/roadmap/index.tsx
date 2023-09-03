@@ -1,3 +1,4 @@
+import { Head } from "$fresh/runtime.ts";
 import { tw } from "twind";
 import { css } from "twind/css";
 
@@ -33,6 +34,27 @@ const Card = css`
 export default function Roadmap() {
   return (
     <>
+      <Head>
+        <title>めめこの牢屋 | ロードマップ</title>
+        <meta property="og:site_name" content="めめこの牢屋" />
+        <meta property="og:title" content="めめこの牢屋 | ロードマップ" />
+        <meta property="og:type" content="article" />
+        <meta property="og:locale" content="ja_JP" />
+        <meta
+          property="og:url"
+          content="https://memeco-prison.deno.dev/roadmap"
+        />
+        <meta
+          property="og:description"
+          content="めめこの牢屋 ロードマップ"
+        />
+        <meta
+          property="og:image"
+          content="https://memeco-prison.deno.dev/memeco.jpg"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@memeco2525" />
+      </Head>
       <main class={tw(Main)}>
         <h1 class={tw(Title)}>気まぐれ開発ロードマップ</h1>
         <p class="text-center text-sm">

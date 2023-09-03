@@ -12,7 +12,6 @@ export default function App({ Component }: AppProps) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>めめこの牢屋</title>
       </head>
       <body class={`h-full ${tw(RootWrap)}`}>
         <Component />
