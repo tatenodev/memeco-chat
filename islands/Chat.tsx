@@ -5,6 +5,7 @@ import { css } from "twind/css";
 import { Message } from "../utils/type.ts";
 import { ChatMessagesArea } from "./ChatMessagesArea.tsx";
 import { ChatInputArea } from "./ChatInputArea.tsx";
+import { WatchPartyRequest } from "./WatchPartyRequest.tsx";
 
 const ChatWrapper = css`
   display: flex;
@@ -60,6 +61,7 @@ export function Chat({ messages }: ChatProps) {
         receivedMessages={receivedMessages}
       />
       <ChatInputArea connectionState={connectionState} />
+      <WatchPartyRequest />
     </section>
   );
 }

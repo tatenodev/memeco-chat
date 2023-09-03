@@ -14,6 +14,7 @@ import * as $$0 from "./islands/Chat.tsx";
 import * as $$1 from "./islands/ChatInputArea.tsx";
 import * as $$2 from "./islands/ChatMessagesArea.tsx";
 import * as $$3 from "./islands/SettingModal.tsx";
+import * as $$4 from "./islands/WatchPartyRequest.tsx";
 
 const manifest = {
   routes: {
@@ -31,6 +32,7 @@ const manifest = {
     "./islands/ChatInputArea.tsx": $$1,
     "./islands/ChatMessagesArea.tsx": $$2,
     "./islands/SettingModal.tsx": $$3,
+    "./islands/WatchPartyRequest.tsx": $$4,
   },
   baseUrl: import.meta.url,
 };
