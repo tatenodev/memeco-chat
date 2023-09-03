@@ -61,7 +61,7 @@ export function Chat({ messages }: ChatProps) {
         receivedMessages={receivedMessages}
       />
       <ChatInputArea connectionState={connectionState} />
-      <WatchPartyRequest />
+      {/* <WatchPartyRequest /> */}
     </section>
   );
 }

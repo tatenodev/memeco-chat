@@ -19,22 +19,54 @@ type SettingsStorage = {
   userColor: string;
 } | null;
 
+type PasswordStorage = {
+  password: string;
+} | null;
+
 type ChatInputAreaProps = {
   connectionState: Signal<number>;
 };
 
 export const ChatInputArea = ({ connectionState }: ChatInputAreaProps) => {
-  const inputMessage = useSignal("");
+  const passwordStorage = IS_BROWSER
+    ? window.localStorage.getItem("memecoPrisonPassword")
+    : null;
   const settingsStorage = IS_BROWSER
     ? window.localStorage.getItem("memecoPrisonSettings")
+    : null;
+  const password: PasswordStorage = passwordStorage
+    ? JSON.parse(passwordStorage)
     : null;
   const settings: SettingsStorage = settingsStorage
     ? JSON.parse(settingsStorage)
     : null;
+  const canMessageSent = useSignal(false);
+  const localToken = useSignal("");
+  const inputMessage = useSignal("");
   const userName = useSignal(settings?.userName ?? "囚人");
   const userColor = useSignal(settings?.userColor ?? getRandomColorCode());
   const lastTimeSend = useSignal<{ timestamp: Date; message: string }[]>([]);
   const isOpenSettingModal = useSignal(false);
+
+  const checkPassword = async () => {
+    const password = prompt("めめちゃんからパスワードを教えてもらってね");
+    if (!password) {
+      return alert("パスワードを入力してね");
+    }
+    const result = await fetch(`${location.origin}/api/check`, {
+      method: "POST",
+      body: JSON.stringify({ password }),
+    });
+    if (result.status === 401) {
+      return alert("パスワードが違うよ");
+    }
+    canMessageSent.value = true;
+    localToken.value = password;
+    window.localStorage.setItem(
+      "memecoPrisonPassword",
+      JSON.stringify({ password }),
+    );
+  };
 
   const sendMessage = async (msg: string) => {
     if (msg === "") {
@@ -76,10 +108,18 @@ export const ChatInputArea = ({ connectionState }: ChatInputAreaProps) => {
     await fetch(`${location.origin}/api/message/send`, {
       method: "POST",
       body: JSON.stringify({
+        token: password?.password,
         message: msg,
         userName: userName.value,
         userColor: userColor.value,
       }),
+    }).then((res) => {
+      if (res.status === 401) {
+        alert("パスワードが違います");
+        checkPassword();
+      }
+    }).catch((err) => {
+      alert("メッセージを送信できませんでした。");
     });
     inputMessage.value = "";
   };
@@ -97,14 +137,30 @@ export const ChatInputArea = ({ connectionState }: ChatInputAreaProps) => {
 
   return (
     <div class={tw(InputArea)}>
-      <Input
-        class="flex-grow"
-        type="text"
-        placeholder="メッセージを送信"
-        value={inputMessage.value}
-        onChange={(e) => inputMessage.value = e.currentTarget.value}
-        onKeyDown={handleKeyDown}
-      />
+      {/* localStorageにpasswordが設定されているかSignalの値がtrueだったらメッセージ送信可能 */}
+      {/* passwordが正しいかどうかはメッセージ送信時に確認 */}
+      {password?.password || canMessageSent.value
+        ? (
+          // メッセージ送信用
+          <Input
+            class="flex-grow"
+            type="text"
+            placeholder="メッセージを送信"
+            value={inputMessage.value}
+            onChange={(e) => inputMessage.value = e.currentTarget.value}
+            onKeyDown={handleKeyDown}
+          />
+        )
+        : (
+          // パスワードチェック用
+          <Input
+            class="flex-grow"
+            type="text"
+            placeholder="メッセージを送信"
+            onClick={checkPassword}
+            onKeyDown={(e) => e.key === "Enter" && checkPassword()}
+          />
+        )}
       <Button onClick={() => sendMessage(inputMessage.value)} class="text-sm">
         {connectionState.value === 1 ? "チャット" : "接続中..."}
       </Button>
