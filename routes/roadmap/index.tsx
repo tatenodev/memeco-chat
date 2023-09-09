@@ -1,6 +1,7 @@
 import { Head } from "$fresh/runtime.ts";
 import { tw } from "twind";
 import { css } from "twind/css";
+import { MailLink } from "../../components/snsLink/MailLink.tsx";
 
 const Main = css`
   color: white;
@@ -29,6 +30,10 @@ const Card = css`
     display: block;
     font-size: 14px;
   }
+`;
+const Max500 = css`
+  max-width: 500px;
+  margin: 0 auto 20px;
 `;
 
 export default function Roadmap() {
@@ -72,6 +77,9 @@ export default function Roadmap() {
             </span>
           </li>
         </ul>
+        <div class={tw(Max500)}>
+          <MailLink text="要望を出す" />
+        </div>
         <div class="text-center">
           <a href="/" class="text-center">戻る</a>
         </div>
