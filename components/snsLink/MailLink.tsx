@@ -9,10 +9,13 @@ const LinkStyle = css`
   align-items: center;
   padding: 6px;
   flex-grow: 1;
-  margin-right: 14px;
 `;
 
-export function MailLink() {
+type MailLinkProps = {
+  text?: string;
+};
+
+export function MailLink({ text = "不具合報告" }: MailLinkProps) {
   return (
     <a
       class={`text-white rounded ${tw(LinkStyle)}`}
@@ -21,7 +24,7 @@ export function MailLink() {
       rel="noopener noreferrer"
     >
       <IconMail />
-      <span class="pl-2">不具合報告</span>
+      <span class="pl-2">{text}</span>
     </a>
   );
 }

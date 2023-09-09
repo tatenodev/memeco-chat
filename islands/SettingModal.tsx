@@ -105,7 +105,7 @@ export function SettingModal(
           </div>
           <div class={tw(ButtonWrapper)}>
             <MailLink />
-            <Button onClick={() => isOpen.value = false}>
+            <Button class="ml-3" onClick={() => isOpen.value = false}>
               キャンセル
             </Button>
             <Button class="ml-3" onClick={saveSettings}>
