@@ -1,3 +1,4 @@
+import "$std/dotenv/load.ts";
 import { Handlers } from "$fresh/server.ts";
 import { ulid } from "https://deno.land/x/ulid@v0.3.0/mod.ts";
 import { Message } from "../../../utils/type.ts";

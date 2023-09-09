@@ -2,7 +2,7 @@ import { useRef } from "preact/hooks";
 import { tw } from "twind";
 import { css } from "twind/css";
 import { Message } from "../utils/type.ts";
-import { Signal, useSignal } from "@preact/signals";
+import { Signal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 
 const ChatBoxWrapper = css`
@@ -45,13 +45,7 @@ export const ChatMessagesArea = (
     <div class={tw(ChatBoxWrapper)}>
       <div class={tw(ChatBox)} ref={scrollElementRef}>
         {messages &&
-          messages.slice().reverse().map((msg) => (
-            <div key={msg.id}>
-              <span class={`text-[${msg.userColor}]`}>{msg.userName}</span>
-              {": "}
-              <span>{msg.body}</span>
-            </div>
-          ))}
+          messages.slice().reverse().map((msg) => <ChatMessage msg={msg} />)}
 
         <div>
           <span class={`text-[#ffffff]`}>看守</span>
@@ -59,14 +53,22 @@ export const ChatMessagesArea = (
           <span>めめこの牢屋チャットへようこそ！</span>
         </div>
 
-        {receivedMessages.value.map((msg) => (
-          <div key={msg.id}>
-            <span class={`text-[${msg.userColor}]`}>{msg.userName}</span>
-            {": "}
-            <span>{msg.body}</span>
-          </div>
-        ))}
+        {receivedMessages.value.map((msg) => <ChatMessage msg={msg} />)}
       </div>
+    </div>
+  );
+};
+
+const ChatMessageContainer = css`
+  margin-bottom: 4px;
+`;
+
+const ChatMessage = ({ msg }: { msg: Message }) => {
+  return (
+    <div key={msg.id} class={tw(ChatMessageContainer)}>
+      <span class={`text-[${msg.userColor}]`}>{msg.userName}</span>
+      {": "}
+      <span>{msg.body}</span>
     </div>
   );
 };
